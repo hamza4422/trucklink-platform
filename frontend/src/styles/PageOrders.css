@@ -1,0 +1,26 @@
+.orders-page {
+  padding-top: 140px;
+  padding-left: 6%;
+  padding-right: 6%;
+  min-height: 100vh;
+}
+
+.orders-title {
+  text-align: center;
+  font-size: 36px;
+  font-weight: 800;
+  margin-bottom: 40px;
+}
+
+.orders-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(330px, 1fr));
+  gap: 25px;
+  justify-items: center;
+  align-items: start;
+}
+
+.no-orders {
+  font-size: 18px;
+  opacity: 0.8;
+}

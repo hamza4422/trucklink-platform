@@ -1,0 +1,89 @@
+.truck-card {
+  width: 360px;
+  background: #ffffff;
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.12);
+  transition: 0.25s ease-in-out;
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+  border: 1px solid #eee;
+}
+
+.truck-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 7px 28px rgba(0, 0, 0, 0.18);
+}
+
+.truck-image {
+  width: 100%;
+  height: 190px;
+  object-fit: cover;
+  background: #f7f7f7;
+}
+
+.truck-name {
+  font-size: 22px;
+  font-weight: 700;
+  margin: 12px 18px 5px;
+  color: #333;
+  text-align: right;
+}
+
+.truck-phone {
+  font-size: 16px;
+  color: #666;
+  margin: 0 18px 12px;
+  text-align: right;
+}
+
+.truck-locations {
+  margin: 0 18px 12px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+.location-tag {
+  background: #ff8c00;
+  color: #fff;
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.truck-desc {
+  margin: 0 18px 15px;
+  padding: 12px;
+  background: #f4f4f4;
+  border-radius: 10px;
+  color: #444;
+  font-size: 14px;
+  text-align: right;
+  line-height: 1.6;
+}
+
+.order-btn {
+  width: calc(100% - 36px);
+  margin: 15px auto 20px;
+  padding: 12px;
+  background: #25D366;
+  color: #fff;
+  border: none;
+  border-radius: 25px;
+  font-size: 16px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: 0.25s;
+}
+
+.order-btn:hover {
+  background: #1ebe5a;
+}

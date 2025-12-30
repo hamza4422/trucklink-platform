@@ -1,0 +1,44 @@
+.trucks-page {
+  width: 100%;
+  padding: 40px 0;
+  text-align: center;
+}
+
+.title {
+  font-size: 36px;
+  font-weight: 800;
+  margin-bottom: 25px;
+  color: #333;
+  letter-spacing: 1px;
+}
+
+.filter-container {
+  margin-bottom: 35px;
+}
+
+.filter-select {
+  padding: 12px 20px;
+  border-radius: 25px;
+  border: 2px solid #ff8c00;
+  font-size: 16px;
+  font-weight: 600;
+  background: #fff;
+  color: #333;
+  cursor: pointer;
+  outline: none;
+  transition: 0.3s;
+}
+
+.filter-select:hover {
+  background: #ff8c00;
+  color: #fff;
+}
+
+.trucks-grid {
+  width: 100%;
+  padding: 20px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(330px, 1fr));
+  gap: 25px;
+  justify-items: center;
+}

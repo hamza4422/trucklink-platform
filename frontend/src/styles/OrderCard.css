@@ -1,0 +1,47 @@
+.order-card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+  margin-bottom: 20px;
+  max-width: 480px;
+}
+
+.order-title {
+  font-size: 20px;
+  font-weight: 800;
+  margin-bottom: 12px;
+}
+
+.order-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  font-size: 15px;
+}
+
+.order-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.accept-btn,
+.reject-btn {
+  flex: 1;
+  padding: 10px;
+  border-radius: 20px;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+}
+
+.accept-btn {
+  background: #00a82d;
+  color: white;
+}
+
+.reject-btn {
+  background: #e53935;
+  color: white;
+}
