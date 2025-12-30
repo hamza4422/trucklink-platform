@@ -1,15 +1,12 @@
-const mysql = require("mysql2");
+import mysql from "mysql2";
+import "dotenv/config";
 
-const db = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "",
-  database: "trucklink"
+export const db = mysql.createPool({
+  host: process.env.MYSQLHOST,
+  user: process.env.MYSQLUSER,
+  password: process.env.MYSQLPASSWORD,
+  database: process.env.MYSQLDATABASE,
+  port: Number(process.env.MYSQLPORT),
+  waitForConnections: true,
+  connectionLimit: 10,
 });
-
-db.connect((err) => {
-  if (err) throw err;
-  console.log("Connected to MySQL");
-});
-
-module.exports = db;

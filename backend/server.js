@@ -1,14 +1,15 @@
-const express = require("express");
-const cors = require("cors");
-const db = require("./db");
-const multer = require("multer");
-const path = require("path");
+import "dotenv/config";
+import express from "express";
+import cors from "cors";
+import multer from "multer";
+import path from "path";
+import { db } from "./db.js";
 
 const app = express();
+
 app.use(express.json());
 app.use(cors());
 app.use("/uploads", express.static("uploads"));
-
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -20,16 +21,17 @@ const storage = multer.diskStorage({
   },
 });
 
-const upload = multer({ storage: storage });
-
+const upload = multer({ storage });
 
 
 app.post("/register", (req, res) => {
   const user = req.body;
+
   const sql = `
     INSERT INTO drivers (fname, email, phoneNumber, password, locations, description, imageUrl)
     VALUES (?, ?, ?, ?, ?, ?, ?)
   `;
+
   db.query(
     sql,
     [
@@ -37,9 +39,9 @@ app.post("/register", (req, res) => {
       user.email,
       user.phoneNumber,
       user.password,
-      user.locations.join(","),
+      (user.locations || []).join(","),
       user.description,
-      user.imageUrl, 
+      user.imageUrl,
     ],
     (err) => {
       if (err) return res.status(500).send({ message: "DB Error" });
@@ -48,16 +50,14 @@ app.post("/register", (req, res) => {
   );
 });
 
-
-
 app.post("/login", (req, res) => {
   const { email, password } = req.body;
+
   db.query(
     "SELECT * FROM drivers WHERE email=? AND password=?",
     [email, password],
     (err, result) => {
       if (err) return res.json({ success: false, message: "DB Error" });
-
       if (result.length === 0)
         return res.json({ success: false, message: "Wrong credentials" });
 
@@ -66,29 +66,25 @@ app.post("/login", (req, res) => {
   );
 });
 
-
-
 app.post("/updateDriver", (req, res) => {
-  const { fname, email, phoneNumber, locations, description, payPerDay } = req.body;
+  const { fname, email, phoneNumber, locations, description, payPerDay } =
+    req.body;
 
   const sql = `
-    UPDATE drivers 
+    UPDATE drivers
     SET fname=?, phoneNumber=?, locations=?, description=?, payPerDay=?
     WHERE email=?
   `;
 
   db.query(
     sql,
-    [fname, phoneNumber, locations.join(","), description, payPerDay, email],
+    [fname, phoneNumber, (locations || []).join(","), description, payPerDay, email],
     (err) => {
       if (err) res.status(500).json({ status: "error" });
       else res.json({ status: "success" });
     }
   );
 });
-
-
-
 
 app.post("/uploadImage", upload.single("image"), (req, res) => {
   const email = req.body.email;
@@ -102,7 +98,7 @@ app.post("/uploadImage", upload.single("image"), (req, res) => {
 
       res.json({
         status: "success",
-        imageUrl:imagePath
+        imageUrl: imagePath,
       });
     }
   );
@@ -111,19 +107,11 @@ app.post("/uploadImage", upload.single("image"), (req, res) => {
 app.get("/getDriver", (req, res) => {
   const email = req.query.email;
 
-  db.query(
-    "SELECT * FROM drivers WHERE email=?",
-    [email],
-    (err, result) => {
-      if (err) return res.json({ status: "error" });
-
-      if (result.length === 0) {
-        return res.json({ status: "not_found" });
-      }
-
-      res.json(result[0]);
-    }
-  );
+  db.query("SELECT * FROM drivers WHERE email=?", [email], (err, result) => {
+    if (err) return res.json({ status: "error" });
+    if (result.length === 0) return res.json({ status: "not_found" });
+    res.json(result[0]);
+  });
 });
 
 app.get("/driver/:id", (req, res) => {
@@ -134,125 +122,92 @@ app.get("/driver/:id", (req, res) => {
     [id],
     (err, result) => {
       if (err) return res.status(500).json({ status: "error" });
-      if (result.length === 0)
-        return res.json({ status: "not_found" });
+      if (result.length === 0) return res.json({ status: "not_found" });
 
       const driver = result[0];
-      driver.locations = driver.locations
-        ? driver.locations.split(",")
-        : [];
-
+      driver.locations = driver.locations ? driver.locations.split(",") : [];
       res.json(driver);
     }
   );
 });
 
-
 app.get("/drivers", (req, res) => {
   db.query("SELECT * FROM drivers", (err, result) => {
     if (err) return res.status(500).json({ status: "error" });
-    
-    const drivers = result.map(d => ({
+
+    const drivers = result.map((d) => ({
       ...d,
-      locations: d.locations ? d.locations.split(",") : []
+      locations: d.locations ? d.locations.split(",") : [],
     }));
 
     res.json(drivers);
   });
 });
 
-
 app.post("/createOrder", (req, res) => {
-  const {
-    driver_id,
-    customerName,
-    customerPhone,
-    region,
-    days
-  } = req.body;
+  const { driver_id, customerName, customerPhone, region, days } = req.body;
 
-  const sqlGetPrice = `
-    SELECT payPerDay FROM drivers WHERE id = ?
-  `;
-
-  db.query(sqlGetPrice, [driver_id], (err, result) => {
-    if (err || result.length === 0) {
-      return res.status(500).json({ status: "error" });
-    }
-
-    const payPerDay = result[0].payPerDay;
-    const totalPrice = payPerDay * days;
-
-    const sqlInsert = `
-      INSERT INTO orders
-      (driver_id, customerName, customerPhone, region, days, totalPrice)
-      VALUES (?, ?, ?, ?, ?, ?)
-    `;
-
-    db.query(
-      sqlInsert,
-      [driver_id, customerName, customerPhone, region, days, totalPrice],
-      (err) => {
-        if (err) return res.status(500).json({ status: "error" });
-        res.json({ status: "success" });
+  db.query(
+    "SELECT payPerDay FROM drivers WHERE id = ?",
+    [driver_id],
+    (err, result) => {
+      if (err || result.length === 0) {
+        return res.status(500).json({ status: "error" });
       }
-    );
-  });
+
+      const payPerDay = result[0].payPerDay;
+      const totalPrice = payPerDay * days;
+
+      const sqlInsert = `
+        INSERT INTO orders
+        (driver_id, customerName, customerPhone, region, days, totalPrice)
+        VALUES (?, ?, ?, ?, ?, ?)
+      `;
+
+      db.query(
+        sqlInsert,
+        [driver_id, customerName, customerPhone, region, days, totalPrice],
+        (err) => {
+          if (err) return res.status(500).json({ status: "error" });
+          res.json({ status: "success" });
+        }
+      );
+    }
+  );
 });
-
-
 
 app.post("/orders/accept", (req, res) => {
   const { orderId } = req.body;
 
-  db.query(
-    "UPDATE orders SET status='ready' WHERE id=?",
-    [orderId],
-    (err) => {
-      if (err) return res.status(500).json({ status: "error" });
-      res.json({ status: "success" });
-    }
-  );
+  db.query("UPDATE orders SET status='ready' WHERE id=?", [orderId], (err) => {
+    if (err) return res.status(500).json({ status: "error" });
+    res.json({ status: "success" });
+  });
 });
-
 
 app.post("/orders/reject", (req, res) => {
   const { orderId } = req.body;
 
-  db.query(
-    "DELETE FROM orders WHERE id=?",
-    [orderId],
-    (err) => {
-      if (err) return res.status(500).json({ status: "error" });
-      res.json({ status: "success" });
-    }
-  );
+  db.query("DELETE FROM orders WHERE id=?", [orderId], (err) => {
+    if (err) return res.status(500).json({ status: "error" });
+    res.json({ status: "success" });
+  });
 });
 
 app.get("/orders/ready/:driverId", (req, res) => {
-  console.log("🔥 pending ORDERS API HIT");
-  console.log("driverId =", req.params.driverId);
-
   const driverId = req.params.driverId;
 
   db.query(
     "SELECT * FROM orders WHERE driver_id=? AND status='ready'",
     [driverId],
     (err, result) => {
-      if (err) {
-        
-        return res.status(500).json({ status: "error" });
-      }
+      if (err) return res.status(500).json({ status: "error" });
       res.json(result);
     }
   );
 });
 
-
-
 app.get("/orders/pending/:driverId", (req, res) => {
-  console.log("🔥 pending ORDERS API HIT");
-  console.log("driverId =", req.params.driverId);
   const driverId = req.params.driverId;
 
   db.query(
@@ -265,5 +220,5 @@ app.get("/orders/pending/:driverId", (req, res) => {
   );
 });
 
-
-app.listen(5000, () => console.log("Server running on port 5000"));
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => console.log("Server running on port", PORT));
