@@ -37,7 +37,7 @@ const NavBar = () => {
   return (
     <header className="header">
       <div className="logo">
-        <Link to="/TruckLink" onClick={hideList}>
+        <Link to="/" onClick={hideList}>
           <img src={logo} alt="logo" />
         </Link>
       </div>
@@ -48,7 +48,7 @@ const NavBar = () => {
         </button>
 
         <div className="link">
-          <Link onClick={hideList} to="/TruckLink">
+          <Link onClick={hideList} to="/">
             {t.home}
           </Link>
           <Link onClick={hideList} to="/about">
