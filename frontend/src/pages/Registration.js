@@ -59,7 +59,7 @@ const Registration = () => {
       const data = await res.json();
 
       if (res.ok) {
-        alert(data.message || t.successRegister);
+        
         navigate("/login");
       } else {
         alert(data.message || t.serverError);

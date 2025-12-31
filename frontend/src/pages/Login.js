@@ -28,7 +28,6 @@ const Login = () => {
       const data = await res.json();
 
       if (data.success) {
-        alert(t.successWelcome(data.user.fname));
         localStorage.setItem("driverEmail", data.user.email);
         localStorage.setItem("driverData", JSON.stringify(data.user));
         navigate("/dashboard");

@@ -46,11 +46,6 @@ const CreateOrder = () => {
             .then((res) => res.json())
             .then((data) => {
             if (data.status === "success") {
-                alert(
-                lang === "ar"
-                    ? "تم إرسال الطلب بنجاح"
-                    : "Order sent successfully"
-                );
                 navigate("/Trucks");
             } else {
                 alert("Error");

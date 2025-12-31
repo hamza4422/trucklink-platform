@@ -62,7 +62,6 @@ const DriverDashboard = () => {
     const data = await res.json();
 
     if (data.status === "success") {
-      alert(t.saveSuccess);
       setEditMode(false);
       localStorage.setItem("driverData", JSON.stringify(driver));
     } else {
