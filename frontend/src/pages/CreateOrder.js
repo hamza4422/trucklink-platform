@@ -59,7 +59,7 @@ const CreateOrder = () => {
     };
 
     useEffect(() => {
-        fetch(`http://localhost:5000/driver/${driverId}`)
+        fetch(`https://trucklink-platform-production.up.railway.app/driver/${driverId}`)
         .then((res) => res.json())
         .then((data) => {
             if (data.status !== "not_found") {

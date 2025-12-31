@@ -4,7 +4,7 @@ import { FaWhatsapp } from "react-icons/fa";
 import { LanguageContext } from "../components/LanguageContext";
 import trucksText from "../translations/trucksText";
 import { Link } from "react-router-dom";
-const API = "http://localhost:5000";
+const API = "https://trucklink-platform-production.up.railway.app";
 
 const TruckCard = ({ driver }) => {
   const { lang } = useContext(LanguageContext);
