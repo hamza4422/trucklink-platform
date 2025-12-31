@@ -4,7 +4,7 @@ import TruckCard from "../components/TruckCard";
 import { LanguageContext } from "../components/LanguageContext";
 import trucksText from "../translations/trucksText";
 
-const API = "http://localhost:5000";
+const API = "https://trucklink-platform-production.up.railway.app";
 
 const Trucks = () => {
   const [drivers, setDrivers] = useState([]);

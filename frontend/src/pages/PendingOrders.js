@@ -6,7 +6,7 @@ const PendingOrders = () => {
   const { lang } = useContext(LanguageContext);
   const [orders, setOrders] = useState([]);
   const handleAccept = (orderId) => {
-  fetch("http://localhost:5000/orders/accept", {
+  fetch("https://trucklink-platform-production.up.railway.app/orders/accept", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ orderId }),
@@ -18,7 +18,7 @@ const PendingOrders = () => {
 };
 
 const handleReject = (orderId) => {
-  fetch("http://localhost:5000/orders/reject", {
+  fetch("https://trucklink-platform-production.up.railway.app/orders/reject", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ orderId }),
@@ -33,7 +33,7 @@ const handleReject = (orderId) => {
 
 
   useEffect(() => {
-    fetch(`http://localhost:5000/orders/pending/${driver.id}`)
+    fetch(`https://trucklink-platform-production.up.railway.app/orders/pending/${driver.id}`)
       .then((res) => res.json())
       .then((data) => {
         setOrders(data);

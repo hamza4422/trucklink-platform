@@ -14,13 +14,13 @@ const ReadyOrders = () => {
   useEffect(() => {
     if (!driver) return;
 
-    fetch(`http://localhost:5000/orders/ready/${driver.id}`)
+    fetch(`https://trucklink-platform-production.up.railway.app/orders/ready/${driver.id}`)
       .then((res) => res.json())
       .then((data) => setOrders(data));
   }, [driver?.id]);
 
   const handleDelete = (orderId) => {
-    fetch("http://localhost:5000/orders/reject", {
+    fetch("https://trucklink-platform-production.up.railway.app/orders/reject", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ orderId }),

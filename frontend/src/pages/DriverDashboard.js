@@ -4,7 +4,7 @@ import { LanguageContext } from "../components/LanguageContext";
 import dashboardText from "../translations/dashboardText";
 import trucksText from "../translations/trucksText";
 import { Link } from "react-router-dom";
-const API = "http://localhost:5000";
+const API = "https://trucklink-platform-production.up.railway.app";
 
 const DriverDashboard = () => {
   const [driver, setDriver] = useState(null);

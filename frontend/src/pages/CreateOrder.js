@@ -29,7 +29,7 @@ const CreateOrder = () => {
             return;
         }
 
-        fetch("http://localhost:5000/createOrder", {
+        fetch("https://trucklink-platform-production.up.railway.app/createOrder", {
             method: "POST",
             headers: {
             "Content-Type": "application/json",
